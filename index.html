@@ -1,0 +1,901 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.6">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="pt-BR"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;Pampa Soluções - Conversor de PDF&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>body {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-family: 'Inter', sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.upload-box {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border: 2px dashed #d1d5db;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 0.75rem;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 1.5rem;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>text-align: center;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>cursor: pointer;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transition: all 0.2s ease-in-out;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.upload-box:hover {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-color: #3b82f6;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #f9fafb;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>#main-app {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: none; /* A aplicação principal começa escondida */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.tab-button {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 0.5rem 1rem;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 0.5rem;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 500;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>cursor: pointer;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transition: all 0.2s ease-in-out;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.tab-button.active {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #3b82f6;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: white;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.tab-button:not(.active) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #e5e7eb;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: #4b5563;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body class="bg-gray-100 flex items-center justify-center min-h-screen py-12"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Tela de Login --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="login-screen" class="bg-white p-8 rounded-2xl shadow-lg w-full max-w-sm mx-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="text-center mb-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h2 class="text-4xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500 mb-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>Pampa Soluções</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h1 class="text-2xl font-bold text-gray-800"&gt;Conversor de Etiquetas&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p class="text-gray-500 mt-2"&gt;Acesso Restrito&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;form id="login-form"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="mb-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;label for="username" class="block text-sm font-medium text-gray-700"&gt;Usuário&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;input type="text" id="username" name="username" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="mb-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;label for="password" class="block text-sm font-medium text-gray-700"&gt;Senha&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="relative mt-1"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;input type="password" id="password" name="password" class="block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm pr-10" required&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button type="button" id="toggle-password" class="absolute inset-y-0 right-0 px-3 flex items-center text-gray-400 hover:text-gray-600"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;svg id="eye-open" class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/svg&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;svg id="eye-closed" class="h-5 w-5 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 1.274-4.057 5.064-7 9.542-7 .847 0 1.673.124 2.468.352M10.582 10.582a3 3 0 11-4.243 4.243M16.5 16.5l-1.5-1.5" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2 2l20 20" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/svg&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="error-message" class="hidden text-center text-sm text-red-600 mb-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>Usuário ou senha inválidos.</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>Entrar</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/form&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Aplicação Principal (escondida) --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="main-app" class="bg-white p-8 rounded-2xl shadow-lg w-full max-w-3xl mx-4"&gt;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="text-center mb-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h2 class="text-4xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>Pampa Soluções</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Abas de Navegação --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="mb-8 flex justify-center space-x-2 md:space-x-4 border-b border-gray-200 pb-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button id="tab-excel" class="tab-button active"&gt;Etiqueta com Excel&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button id="tab-declaration" class="tab-button"&gt;Etiqueta + Declaração&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button id="tab-checklist" class="tab-button"&gt;Etiqueta + Checklist&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Ferramenta 1: Etiqueta com Excel --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="tool-excel"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h1 class="text-2xl font-bold text-gray-800 text-center"&gt;Conversor de Etiquetas PDF&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p class="text-gray-500 mt-2 text-center"&gt;Envie um PDF e uma planilha Excel para gerar etiquetas 10x15 com informações do produto.&lt;/p&gt;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="upload-container-excel" class="grid md:grid-cols-2 gap-6 my-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div id="pdf-upload-area-excel" class="upload-box"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;input type="file" id="pdf-input-excel" class="hidden" accept="application/pdf"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div id="pdf-upload-prompt-excel"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;svg class="mx-auto h-10 w-10 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" /&gt;&lt;/svg&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="mt-2 text-sm text-gray-600"&gt;&lt;span class="font-semibold text-blue-600"&gt;Enviar PDF&lt;/span&gt; ou arrastar&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div id="pdf-file-info-excel" class="hidden text-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>&lt;p class="text-sm font-medium text-gray-700 truncate" id="pdf-file-name-excel"&gt;&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>&lt;button id="pdf-remove-file-excel" class="mt-1 text-xs text-red-500 hover:underline"&gt;Remover&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div id="excel-upload-area" class="upload-box"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;input type="file" id="excel-input" class="hidden" accept=".xls,.xlsx"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div id="excel-upload-prompt"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;svg class="mx-auto h-10 w-10 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V7a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /&gt;&lt;/svg&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="mt-2 text-sm text-gray-600"&gt;&lt;span class="font-semibold text-green-600"&gt;Enviar Excel&lt;/span&gt; ou arrastar&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div id="excel-file-info" class="hidden text-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>&lt;p class="text-sm font-medium text-gray-700 truncate" id="excel-file-name"&gt;&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>&lt;button id="excel-remove-file" class="mt-1 text-xs text-red-500 hover:underline"&gt;Remover&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="convert-button-container-excel" class="text-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>&lt;div class="mb-4 p-3 bg-yellow-50 border border-yellow-300 text-yellow-800 text-sm font-semibold rounded-lg"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>Confira sempre o número do pedido em baixo pra ter certeza que está correto!!</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button id="convert-btn-excel" class="bg-blue-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-blue-700 transition-all disabled:bg-gray-400 disabled:cursor-not-allowed" disabled&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>Converter Arquivos</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Ferramenta 2: Etiqueta + Declaração --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="tool-declaration" class="hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h1 class="text-2xl font-bold text-gray-800 text-center"&gt;Organizador de Etiqueta + Declaração&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p class="text-gray-500 mt-2 text-center"&gt;Informe o número de etiquetas e envie o PDF para intercalar.&lt;/p&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="my-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>&lt;div id="pdf-upload-area-single-decl" class="upload-box max-w-md mx-auto"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;input type="file" id="pdf-input-single-decl" class="hidden" accept="application/pdf"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div id="pdf-upload-prompt-single-decl"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;svg class="mx-auto h-10 w-10 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" /&gt;&lt;/svg&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="mt-2 text-sm text-gray-600"&gt;&lt;span class="font-semibold text-blue-600"&gt;1. Enviar PDF Único&lt;/span&gt;&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div id="pdf-file-info-single-decl" class="hidden text-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>&lt;p class="text-sm font-medium text-gray-700 truncate" id="pdf-file-name-single-decl"&gt;&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>&lt;button id="pdf-remove-file-single-decl" class="mt-1 text-xs text-red-500 hover:underline"&gt;Remover&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="my-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;label for="label-count-decl" class="block text-sm font-medium text-gray-700 text-center mb-2"&gt;2. Informe o número exato de etiquetas&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;input type="number" id="label-count-decl" name="label-count-decl" min="1" class="mx-auto block w-full max-w-xs px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Ex: 7" required&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">             </span>&lt;div id="convert-button-container-declaration" class="text-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button id="convert-btn-declaration" class="bg-blue-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-blue-700 transition-all disabled:bg-gray-400 disabled:cursor-not-allowed" disabled&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>Organizar Arquivo</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Ferramenta 3: Etiqueta + Checklist --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="tool-checklist" class="hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h1 class="text-2xl font-bold text-gray-800 text-center"&gt;Organizador de Etiqueta + Checklist&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p class="text-gray-500 mt-2 text-center"&gt;Informe o número de itens e envie o PDF para intercalar.&lt;/p&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="my-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>&lt;div id="pdf-upload-area-single-check" class="upload-box max-w-md mx-auto"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;input type="file" id="pdf-input-single-check" class="hidden" accept="application/pdf"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div id="pdf-upload-prompt-single-check"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;svg class="mx-auto h-10 w-10 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" /&gt;&lt;/svg&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p class="mt-2 text-sm text-gray-600"&gt;&lt;span class="font-semibold text-blue-600"&gt;1. Enviar PDF Único&lt;/span&gt;&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div id="pdf-file-info-single-check" class="hidden text-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>&lt;p class="text-sm font-medium text-gray-700 truncate" id="pdf-file-name-single-check"&gt;&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                          </span>&lt;button id="pdf-remove-file-single-check" class="mt-1 text-xs text-red-500 hover:underline"&gt;Remover&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="my-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;label for="label-count-check" class="block text-sm font-medium text-gray-700 text-center mb-2"&gt;2. Informe o número de etiquetas / checklists&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;input type="number" id="label-count-check" name="label-count-check" min="1" class="mx-auto block w-full max-w-xs px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Ex: 12" required&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">             </span>&lt;div id="convert-button-container-checklist" class="text-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button id="convert-btn-checklist" class="bg-blue-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-blue-700 transition-all disabled:bg-gray-400 disabled:cursor-not-allowed" disabled&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>Organizar Arquivo</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Área de Carregamento e Resultados (Comum) --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="loading-area" class="hidden text-center mt-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="progress-container" class="w-full bg-gray-200 rounded-full h-4 mb-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div id="progress-bar" class="bg-blue-600 h-4 rounded-full transition-width duration-300" style="width: 0%"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p id="progress-text" class="text-sm text-gray-600"&gt;Iniciando...&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="results-area" class="hidden mt-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h2 class="text-2xl font-bold text-center text-gray-800 mb-6"&gt;Download Pronto!&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="download-links" class="grid grid-cols-1 gap-4"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">             </span>&lt;div class="mt-8 text-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button id="start-over-btn" class="bg-gray-200 text-gray-800 font-bold py-3 px-8 rounded-lg hover:bg-gray-300 transition-all"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>Começar Novamente</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Rodapé com Contato (Comum) --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="mt-12 text-center border-t border-gray-200 pt-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="bg-slate-50 rounded-lg p-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;p class="text-gray-800 font-semibold mb-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>Vendemos ETIQUETAS e saquinhos de embalagem, venha cotar com a gente, garantimos o melhor preço no atacado.</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;a href="https://wa.me/5537991316234" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-5 py-2.5 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700 transition-all shadow-sm"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"&gt;&lt;path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.894 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 4.315 1.919 6.066l-1.225 4.485 4.635-1.218zM8.332 10.233c-.131-.26-.26-.263-.383-.263-.116 0-.249.001-.38.001-.131 0-.341.043-.518.234-.176.193-.661.652-.661 1.576 0 .924.675 1.823.769 1.954.093.13 1.328 2.118 3.231 2.87.536.208.96.33.96.425 0 .213.001.484-.043.553-.043.07-.248.043-.518-.043s-2.119-1.225-2.421-1.396c-.302-.17-.562-.192-.787-.109-.225.083-.464.26-.567.382-.103.123-.193.26-.282.403-.09.142-.17.143-.302.109-.131-.033-1.043-.463-1.985-1.225-.724-.584-1.224-1.303-1.363-1.532-.139-.23-.279-.353-.139-.661.14-.307.302-.382.403-.517.102-.135.142-.225.225-.383.083-.157.043-.28.001-.382-.043-.102-.341-.834-.465-.962s-.249-.109-.341-.109z"/&gt;&lt;/svg&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;span&gt;Chame no WhatsApp&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.addEventListener('DOMContentLoaded', () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Importa as funções necessárias das bibliotecas</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const { PDFDocument, rgb, StandardFonts } = PDFLib;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const { read, utils } = XLSX;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- Lógica de Autenticação ---</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const loginScreen = document.getElementById('login-screen');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const mainApp = document.getElementById('main-app');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const loginForm = document.getElementById('login-form');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const errorMessage = document.getElementById('error-message');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const passwordInput = document.getElementById('password');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const togglePasswordButton = document.getElementById('toggle-password');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const eyeOpenIcon = document.getElementById('eye-open');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const eyeClosedIcon = document.getElementById('eye-closed');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const allowedUsers = {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>"pampa": "solucoes123",</p>
+<p class="p1"><span class="Apple-converted-space">            </span>"cliente": "teste",</p>
+<p class="p1"><span class="Apple-converted-space">        </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>loginForm.addEventListener('submit', (e) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>e.preventDefault();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const username = loginForm.username.value;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const password = passwordInput.value;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (allowedUsers[username] &amp;&amp; allowedUsers[username] === password) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>loginScreen.style.display = 'none';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>mainApp.style.display = 'block';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>errorMessage.style.display = 'block';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>togglePasswordButton.addEventListener('click', () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>passwordInput.setAttribute('type', type);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>eyeOpenIcon.classList.toggle('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>eyeClosedIcon.classList.toggle('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- Lógica de Navegação por Abas ---</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const tabExcel = document.getElementById('tab-excel');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const tabDeclaration = document.getElementById('tab-declaration');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const tabChecklist = document.getElementById('tab-checklist');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const toolExcel = document.getElementById('tool-excel');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const toolDeclaration = document.getElementById('tool-declaration');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const toolChecklist = document.getElementById('tool-checklist');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function showTool(toolToShow) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>toolExcel.classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>toolDeclaration.classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>toolChecklist.classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>resetCommonUI();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>tabExcel.classList.remove('active');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>tabDeclaration.classList.remove('active');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>tabChecklist.classList.remove('active');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (toolToShow === 'excel') {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>toolExcel.classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>tabExcel.classList.add('active');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else if (toolToShow === 'declaration') {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>toolDeclaration.classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>tabDeclaration.classList.add('active');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else if (toolToShow === 'checklist') {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>toolChecklist.classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>tabChecklist.classList.add('active');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>tabExcel.addEventListener('click', () =&gt; showTool('excel'));</p>
+<p class="p1"><span class="Apple-converted-space">        </span>tabDeclaration.addEventListener('click', () =&gt; showTool('declaration'));</p>
+<p class="p1"><span class="Apple-converted-space">        </span>tabChecklist.addEventListener('click', () =&gt; showTool('checklist'));</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- Elementos e Lógica Comuns ---</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const loadingArea = document.getElementById('loading-area');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const resultsArea = document.getElementById('results-area');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const downloadLinksContainer = document.getElementById('download-links');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const startOverBtn = document.getElementById('start-over-btn');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const progressBar = document.getElementById('progress-bar');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const progressText = document.getElementById('progress-text');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function resetCommonUI() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>loadingArea.classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>resultsArea.classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>downloadLinksContainer.innerHTML = '';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>startOverBtn.addEventListener('click', () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Reinicia os campos de upload e variáveis de estado para todas as ferramentas</p>
+<p class="p1"><span class="Apple-converted-space">            </span>resetUploadArea(pdfUploadAreaExcel, pdfInputExcel, pdfUploadPromptExcel, pdfFileInfoExcel);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>selectedPdfFileExcel = null;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>resetUploadArea(excelUploadArea, excelInput, excelUploadPrompt, excelFileInfo);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>selectedExcelFile = null;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>resetUploadArea(pdfUploadAreaDecl, pdfInputDecl, pdfUploadPromptDecl, pdfFileInfoDecl);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>selectedPdfFileDecl = null;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('label-count-decl').value = '';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>resetUploadArea(pdfUploadAreaCheck, pdfInputCheck, pdfUploadPromptCheck, pdfFileInfoCheck);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>selectedPdfFileCheck = null;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('label-count-check').value = '';</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Reabilita os botões de conversão</p>
+<p class="p1"><span class="Apple-converted-space">            </span>checkEnableConvertButtonExcel();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>checkEnableConvertButtonDeclaration();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>checkEnableConvertButtonChecklist();</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Volta para a aba atual</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let currentTool = 'excel';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (tabDeclaration.classList.contains('active')) currentTool = 'declaration';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (tabChecklist.classList.contains('active')) currentTool = 'checklist';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>showTool(currentTool);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function updateProgress(processed, total) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const percentage = total &gt; 0 ? Math.round((processed / total) * 100) : 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>progressBar.style.width = `${percentage}%`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>progressText.textContent = `Processando item ${processed} de ${total}...`;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function createDownloadLink(bytes, fileName, linkText) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const blob = new Blob([bytes], { type: 'application/pdf' });</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const link = document.createElement('a');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>link.href = URL.createObjectURL(blob);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>link.download = fileName;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>link.className = 'bg-blue-600 text-white p-4 rounded-lg flex items-center justify-center hover:bg-blue-700 transition-all text-lg font-semibold';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>link.innerHTML = `&lt;span&gt;${linkText}&lt;/span&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /&gt;&lt;/svg&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>downloadLinksContainer.appendChild(link);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- LÓGICA DA FERRAMENTA 1: ETIQUETA COM EXCEL ---</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const pdfUploadAreaExcel = document.getElementById('pdf-upload-area-excel');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const pdfInputExcel = document.getElementById('pdf-input-excel');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const pdfUploadPromptExcel = document.getElementById('pdf-upload-prompt-excel');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const pdfFileInfoExcel = document.getElementById('pdf-file-info-excel');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const pdfFileNameElExcel = document.getElementById('pdf-file-name-excel');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const pdfRemoveFileBtnExcel = document.getElementById('pdf-remove-file-excel');</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const excelUploadArea = document.getElementById('excel-upload-area');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const excelInput = document.getElementById('excel-input');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const excelUploadPrompt = document.getElementById('excel-upload-prompt');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const excelFileInfo = document.getElementById('excel-file-info');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const excelFileNameEl = document.getElementById('excel-file-name');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const excelRemoveFileBtn = document.getElementById('excel-remove-file');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const convertBtnExcel = document.getElementById('convert-btn-excel');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let selectedPdfFileExcel = null;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let selectedExcelFile = null;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function checkEnableConvertButtonExcel() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>convertBtnExcel.disabled = !(selectedPdfFileExcel &amp;&amp; selectedExcelFile);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>setupUploadArea(pdfUploadAreaExcel, pdfInputExcel, pdfUploadPromptExcel, pdfFileInfoExcel, pdfFileNameElExcel, pdfRemoveFileBtnExcel, (file) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>selectedPdfFileExcel = file;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>checkEnableConvertButtonExcel();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p1"><span class="Apple-converted-space">        </span>setupUploadArea(excelUploadArea, excelInput, excelUploadPrompt, excelFileInfo, excelFileNameEl, excelRemoveFileBtn, (file) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>selectedExcelFile = file;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>checkEnableConvertButtonExcel();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>convertBtnExcel.addEventListener('click', () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (selectedPdfFileExcel &amp;&amp; selectedExcelFile) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>processFilesExcel(selectedPdfFileExcel, selectedExcelFile);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function parseMultiProductInfo(infoString) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!infoString || typeof infoString !== 'string') return [];</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const products = [];</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const productRegex = /\[\d+\]\s*(Product Name:.*?)(?=\s*\[\d+\]\s*Product Name:|$)/gs;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let match;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>while ((match = productRegex.exec(infoString)) !== null) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const productBlock = match[1];</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const info = {};</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const parts = productBlock.split(';');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>parts.forEach(part =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const [key, ...valueParts] = part.split(':');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>if (key &amp;&amp; valueParts.length &gt; 0) {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>const value = valueParts.join(':').trim();</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>const cleanKey = key.trim();</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>if (cleanKey === 'Product Name') info.productName = value;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>else if (cleanKey === 'Variation Name') info.variationName = value;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>else if (cleanKey === 'Quantity') info.quantity = value;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>else if (cleanKey === 'SKU Reference No.') info.sku = value;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (info.productName) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>products.push(info);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>return products;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function wrapText(text, font, size, maxWidth, maxLines = 2) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!text) return [];</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const words = text.split(' ');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let lines = [];</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let currentLine = '';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>for (const word of words) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const testLine = currentLine ? `${currentLine} ${word}` : word;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (font.widthOfTextAtSize(testLine, size) &lt;= maxWidth) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>currentLine = testLine;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>lines.push(currentLine);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>currentLine = word;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>lines.push(currentLine);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (lines.length &gt; maxLines) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const allowedLines = lines.slice(0, maxLines);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>let lastVisibleLine = allowedLines[maxLines - 1];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>while (font.widthOfTextAtSize(lastVisibleLine + '...', size) &gt; maxWidth &amp;&amp; lastVisibleLine.length &gt; 0) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>lastVisibleLine = lastVisibleLine.slice(0, -1);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>allowedLines[maxLines - 1] = lastVisibleLine + '...';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return allowedLines;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>return lines;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>async function processFilesExcel(pdfFile, excelFile) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>toolExcel.classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>loadingArea.classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>updateProgress(0, 0);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>progressText.textContent = 'Lendo arquivos...';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const [pdfBytes, excelBytes] = await Promise.all([pdfFile.arrayBuffer(), excelFile.arrayBuffer()]);</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>progressText.textContent = 'Processando dados...';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const workbook = read(excelBytes, { type: 'array' });</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const sheetName = workbook.SheetNames[0];</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const excelData = utils.sheet_to_json(workbook.Sheets[sheetName]);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>const sourceDoc = await PDFDocument.load(pdfBytes);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const finalPdfDoc = await PDFDocument.create();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const helveticaFont = await finalPdfDoc.embedFont(StandardFonts.Helvetica);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const helveticaBoldFont = await finalPdfDoc.embedFont(StandardFonts.HelveticaBold);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>const CM_TO_POINTS = 28.3465;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const targetWidth = 10 * CM_TO_POINTS;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const targetHeight = 15 * CM_TO_POINTS;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const margin = 10;</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>const fonts = { helveticaFont, helveticaBoldFont };</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const options = {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>targetWidth, targetHeight, margin,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>colWidths: [115, 85, 25, 50],</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>fontSize: 7.5,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>lineHeight: 8.5</p>
+<p class="p1"><span class="Apple-converted-space">                </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>let labelIndex = 0;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>let combinedData = [];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>progressText.textContent = 'Associando etiquetas com dados do Excel...';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>for (const sourcePage of sourceDoc.getPages()) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const { width: sourceWidth, height: sourceHeight } = sourcePage.getSize();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const quadrants = [</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>{ x: 0, y: sourceHeight / 2 },<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                        </span>{ x: 0, y: 0 },<span class="Apple-converted-space">                 </span></p>
+<p class="p1"><span class="Apple-converted-space">                        </span>{ x: sourceWidth / 2, y: sourceHeight / 2 },</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>{ x: sourceWidth / 2, y: 0 } <span class="Apple-converted-space">                 </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>];</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>for (const quadrant of quadrants) {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>if (labelIndex &gt;= excelData.length) break;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>const excelRow = excelData[labelIndex];</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>const sortKey = parseMultiProductInfo(excelRow.product_info)[0]?.sku || '';</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>combinedData.push({</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>sourcePage, quadrant,</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>quadrantWidth: sourceWidth / 2, quadrantHeight: sourceHeight / 2,</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>excelRow, sortKey: sortKey</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>});</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>labelIndex++;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>if (labelIndex &gt;= excelData.length) break;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>progressText.textContent = 'Ordenando etiquetas...';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>combinedData.sort((a, b) =&gt; a.sortKey.localeCompare(b.sortKey));</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>const totalLabels = combinedData.length;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>updateProgress(0, totalLabels);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>for (let i = 0; i &lt; totalLabels; i++) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const item = combinedData[i];</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const products = parseMultiProductInfo(item.excelRow.product_info);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const orderId = item.excelRow.order_sn || 'N/A';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const mainPage = finalPdfDoc.addPage([targetWidth, targetHeight]);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const infoAreaHeight = targetHeight * 0.20;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const labelAreaHeight = targetHeight - infoAreaHeight;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const embeddedQuadrant = await finalPdfDoc.embedPage(item.sourcePage, { left: item.quadrant.x, bottom: item.quadrant.y, right: item.quadrant.x + item.quadrantWidth, top: item.quadrant.y + item.quadrantHeight });</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const scale = Math.min(targetWidth / embeddedQuadrant.width, labelAreaHeight / embeddedQuadrant.height);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>mainPage.drawPage(embeddedQuadrant, {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>x: (targetWidth - embeddedQuadrant.width * scale) / 2,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>y: infoAreaHeight + (labelAreaHeight - embeddedQuadrant.height * scale) / 2,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>width: embeddedQuadrant.width * scale, height: embeddedQuadrant.height * scale</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>});</p>
+<p class="p2"><span class="Apple-converted-space">                    </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const productsOnFirstPage = products.slice(0, 2);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>drawProductTableOnPage(mainPage, productsOnFirstPage, infoAreaHeight, fonts, options);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>mainPage.drawText(`*Conferir número do pedido: ${orderId}`, { x: margin / 2, y: margin, font: helveticaFont, size: 7, color: rgb(0.2, 0.2, 0.2) });</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>if (products.length &gt; 2) {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>const remainingProducts = products.slice(2);</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>const continuationPage = finalPdfDoc.addPage([targetWidth, targetHeight]);</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>drawProductTableOnPage(continuationPage, remainingProducts, targetHeight - margin, fonts, options);</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>continuationPage.drawText(`*Conferir número do pedido: ${orderId}`, { x: margin / 2, y: margin, font: helveticaFont, size: 7, color: rgb(0.2, 0.2, 0.2) });</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>updateProgress(i + 1, totalLabels);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>progressText.textContent = 'Salvando PDF...';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const finalPdfBytes = await finalPdfDoc.save();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const newFileName = `conversor_pampa_${totalLabels}_etiquetas.pdf`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>createDownloadLink(finalPdfBytes, newFileName, `Baixar PDF com ${totalLabels} etiquetas`);</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>loadingArea.classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>resultsArea.classList.remove('hidden');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>} catch (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.error('Erro ao processar os arquivos:', error);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>progressText.textContent = `Erro: ${error.message}. Tente novamente.`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>progressBar.style.backgroundColor = '#ef4444';<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function drawProductTableOnPage(page, products, startY, fonts, options) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const { targetWidth, margin, colWidths, fontSize, lineHeight } = options;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const { helveticaFont, helveticaBoldFont } = fonts;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const tableLeftX = margin / 2;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const tableRightX = targetWidth - margin / 2;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const colPositions = [</p>
+<p class="p1"><span class="Apple-converted-space">                </span>tableLeftX + 2,<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>tableLeftX + colWidths[0],<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>tableLeftX + colWidths[0] + colWidths[1],<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>tableLeftX + colWidths[0] + colWidths[1] + colWidths[2]</p>
+<p class="p1"><span class="Apple-converted-space">            </span>];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>let currentY = startY - lineHeight;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>for (const product of products) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const nameLines = wrapText(product.productName || '', helveticaBoldFont, fontSize, colWidths[0] - 6, 2);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const variationLines = wrapText(product.variationName || '', helveticaFont, fontSize, colWidths[1] - 6, 2);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const entryLineCount = Math.max(nameLines.length, variationLines.length, 1);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const entryHeight = entryLineCount * lineHeight;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>page.drawRectangle({</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>x: tableLeftX, y: currentY - entryHeight + lineHeight - 2,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>width: tableRightX - tableLeftX, height: entryHeight,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>borderColor: rgb(0, 0, 0), borderWidth: 0.5</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p1"><span class="Apple-converted-space">                </span>for(let j = 1; j &lt; colPositions.length; j++){</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>page.drawLine({</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>start: { x: colPositions[j] - 2, y: currentY + lineHeight - 2 },</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>end: { x: colPositions[j] - 2, y: currentY - entryHeight + lineHeight - 2 },</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>thickness: 0.5</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>});</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>let lineY = currentY;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>for(const line of nameLines) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>page.drawText(line, { x: colPositions[0], y: lineY, font: helveticaBoldFont, size: fontSize, color: rgb(0, 0, 0) });</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>lineY -= lineHeight;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>lineY = currentY;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>for(const line of variationLines) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>page.drawText(line, { x: colPositions[1], y: lineY, font: helveticaFont, size: fontSize, color: rgb(0, 0, 0) });</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>lineY -= lineHeight;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const singleLineY = currentY - ((entryLineCount - 1) * lineHeight / 2);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>page.drawText(product.quantity || '', { x: colPositions[2], y: singleLineY, font: helveticaFont, size: fontSize, color: rgb(0, 0, 0) });</p>
+<p class="p1"><span class="Apple-converted-space">                </span>page.drawText(product.sku || '', { x: colPositions[3], y: singleLineY, font: helveticaFont, size: fontSize, color: rgb(0, 0, 0) });</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>currentY -= entryHeight;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- LÓGICA DAS FERRAMENTAS 2 E 3 (DECLARAÇÃO E CHECKLIST) ---</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let selectedPdfFileDecl = null;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let selectedPdfFileCheck = null;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const pdfUploadAreaDecl = document.getElementById('pdf-upload-area-single-decl');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const pdfInputDecl = document.getElementById('pdf-input-single-decl');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const pdfUploadPromptDecl = document.getElementById('pdf-upload-prompt-single-decl');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const pdfFileInfoDecl = document.getElementById('pdf-file-info-single-decl');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const pdfFileNameElDecl = document.getElementById('pdf-file-name-single-decl');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const pdfRemoveFileBtnDecl = document.getElementById('pdf-remove-file-single-decl');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const labelCountInputDecl = document.getElementById('label-count-decl');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const convertBtnDecl = document.getElementById('convert-btn-declaration');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const pdfUploadAreaCheck = document.getElementById('pdf-upload-area-single-check');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const pdfInputCheck = document.getElementById('pdf-input-single-check');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const pdfUploadPromptCheck = document.getElementById('pdf-upload-prompt-single-check');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const pdfFileInfoCheck = document.getElementById('pdf-file-info-single-check');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const pdfFileNameElCheck = document.getElementById('pdf-file-name-single-check');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const pdfRemoveFileBtnCheck = document.getElementById('pdf-remove-file-single-check');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const labelCountInputCheck = document.getElementById('label-count-check');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const convertBtnCheck = document.getElementById('convert-btn-checklist');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function checkEnableConvertButtonDeclaration() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>convertBtnDecl.disabled = !(selectedPdfFileDecl &amp;&amp; labelCountInputDecl.value &gt; 0);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function checkEnableConvertButtonChecklist() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>convertBtnCheck.disabled = !(selectedPdfFileCheck &amp;&amp; labelCountInputCheck.value &gt; 0);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>setupUploadArea(pdfUploadAreaDecl, pdfInputDecl, pdfUploadPromptDecl, pdfFileInfoDecl, pdfFileNameElDecl, pdfRemoveFileBtnDecl, (file) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>selectedPdfFileDecl = file;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>checkEnableConvertButtonDeclaration();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p1"><span class="Apple-converted-space">        </span>labelCountInputDecl.addEventListener('input', checkEnableConvertButtonDeclaration);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>convertBtnDecl.addEventListener('click', () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">             </span>if (selectedPdfFileDecl &amp;&amp; labelCountInputDecl.value) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>processDeclarationPdf(selectedPdfFileDecl, parseInt(labelCountInputDecl.value, 10));</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>setupUploadArea(pdfUploadAreaCheck, pdfInputCheck, pdfUploadPromptCheck, pdfFileInfoCheck, pdfFileNameElCheck, pdfRemoveFileBtnCheck, (file) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>selectedPdfFileCheck = file;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>checkEnableConvertButtonChecklist();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p1"><span class="Apple-converted-space">        </span>labelCountInputCheck.addEventListener('input', checkEnableConvertButtonChecklist);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>convertBtnCheck.addEventListener('click', () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (selectedPdfFileCheck &amp;&amp; labelCountInputCheck.value) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>processChecklistPdf(selectedPdfFileCheck, parseInt(labelCountInputCheck.value, 10));</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- LÓGICA CORRIGIDA PARA ETIQUETA + DECLARAÇÃO ---</p>
+<p class="p1"><span class="Apple-converted-space">        </span>async function processDeclarationPdf(pdfFile, labelCount) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('tool-declaration').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>loadingArea.classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>updateProgress(0, labelCount);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>progressText.textContent = 'Lendo PDF...';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const pdfBytes = await pdfFile.arrayBuffer();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const sourceDoc = await PDFDocument.load(pdfBytes);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const finalPdfDoc = await PDFDocument.create();</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>const totalPages = sourceDoc.getPageCount();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const expectedLabelPages = Math.ceil(labelCount / 4);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const expectedDeclarationPages = labelCount;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const expectedTotalPages = expectedLabelPages + expectedDeclarationPages;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (totalPages !== expectedTotalPages) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>throw new Error(`Estrutura de PDF inválida. Para ${labelCount} etiquetas, o PDF precisa ter ${expectedLabelPages} pág. de etiquetas + ${expectedDeclarationPages} pág. de declaração, totalizando ${expectedTotalPages} páginas. O seu arquivo tem ${totalPages}.`);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>const { width: sourceWidth, height: sourceHeight } = sourceDoc.getPages()[0].getSize();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const quadrantWidth = sourceWidth / 2;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const quadrantHeight = sourceHeight / 2;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const CM_TO_POINTS = 28.3465;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const targetWidth = 10 * CM_TO_POINTS;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const targetHeight = 15 * CM_TO_POINTS;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>const quadrants = [</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>{ x: 0, y: sourceHeight / 2 }, { x: 0, y: 0 },</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>{ x: sourceWidth / 2, y: sourceHeight / 2 }, { x: sourceWidth / 2, y: 0 }</p>
+<p class="p1"><span class="Apple-converted-space">                </span>];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>progressText.textContent = `Intercalando Declarações...`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>for (let i = 0; i &lt; labelCount; i++) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>// Pega a etiqueta recortada</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const sourceLabelPageIndex = Math.floor(i / 4);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const quadrantIndex = i % 4;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const sourceLabelPage = sourceDoc.getPages()[sourceLabelPageIndex];</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const quadrant = quadrants[quadrantIndex];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const newLabelPage = finalPdfDoc.addPage([targetWidth, targetHeight]);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const embeddedLabel = await finalPdfDoc.embedPage(sourceLabelPage, {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>left: quadrant.x, bottom: quadrant.y,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>right: quadrant.x + quadrantWidth, top: quadrant.y + quadrantHeight</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>});</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const scale = Math.min(targetWidth / embeddedLabel.width, targetHeight / embeddedLabel.height);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>newLabelPage.drawPage(embeddedLabel, {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>x: (targetWidth - embeddedLabel.width * scale) / 2,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>y: (targetHeight - embeddedLabel.height * scale) / 2,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>width: embeddedLabel.width * scale, height: embeddedLabel.height * scale</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>// Pega a página de declaração inteira</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const sourceDeclarationPageIndex = expectedLabelPages + i;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const [copiedDeclarationPage] = await finalPdfDoc.copyPages(sourceDoc, [sourceDeclarationPageIndex]);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>finalPdfDoc.addPage(copiedDeclarationPage);</p>
+<p class="p2"><span class="Apple-converted-space">                    </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>updateProgress(i + 1, labelCount);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>progressText.textContent = 'Salvando PDF final...';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const finalPdfBytes = await finalPdfDoc.save();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const newFileName = `conversor_pampa_${labelCount}_etiquetas.pdf`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>createDownloadLink(finalPdfBytes, newFileName, `Baixar PDF com ${labelCount} etiquetas`);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>loadingArea.classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>resultsArea.classList.remove('hidden');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>} catch (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>console.error(`Erro ao processar PDF com Declaração:`, error);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>progressText.textContent = `Erro: ${error.message}. Verifique a estrutura do arquivo.`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>progressBar.style.backgroundColor = '#ef4444';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- LÓGICA MANTIDA PARA ETIQUETA + CHECKLIST ---</p>
+<p class="p1"><span class="Apple-converted-space">        </span>async function processChecklistPdf(pdfFile, labelCount) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const type = 'Checklist';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById(`tool-${type.toLowerCase()}`).classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>loadingArea.classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>updateProgress(0, labelCount);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>progressText.textContent = 'Lendo PDF...';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const pdfBytes = await pdfFile.arrayBuffer();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const sourceDoc = await PDFDocument.load(pdfBytes);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const finalPdfDoc = await PDFDocument.create();</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>const totalPages = sourceDoc.getPageCount();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const expectedLabelPages = Math.ceil(labelCount / 4);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const expectedTotalPages = expectedLabelPages * 2;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (totalPages !== expectedTotalPages) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>throw new Error(`Número de páginas incompatível. Para ${labelCount} etiquetas (4 por pág), o PDF deveria ter ${expectedTotalPages} páginas (${expectedLabelPages} de etiquetas e ${expectedLabelPages} de ${type.toLowerCase()}). O seu tem ${totalPages}.`);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>const { width: sourceWidth, height: sourceHeight } = sourceDoc.getPages()[0].getSize();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const quadrantWidth = sourceWidth / 2;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const quadrantHeight = sourceHeight / 2;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const CM_TO_POINTS = 28.3465;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const targetWidth = 10 * CM_TO_POINTS;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const targetHeight = 15 * CM_TO_POINTS;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>const quadrants = [</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>{ x: 0, y: sourceHeight / 2 }, { x: 0, y: 0 },</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>{ x: sourceWidth / 2, y: sourceHeight / 2 }, { x: sourceWidth / 2, y: 0 }</p>
+<p class="p1"><span class="Apple-converted-space">                </span>];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>progressText.textContent = `Intercalando ${type}...`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>for (let i = 0; i &lt; labelCount; i++) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const sourceLabelPageIndex = Math.floor(i / 4);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const quadrantIndex = i % 4;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const sourceContentPageIndex = expectedLabelPages + sourceLabelPageIndex;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const sourceLabelPage = sourceDoc.getPages()[sourceLabelPageIndex];</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const sourceContentPage = sourceDoc.getPages()[sourceContentPageIndex];</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const quadrant = quadrants[quadrantIndex];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const newLabelPage = finalPdfDoc.addPage([targetWidth, targetHeight]);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const embeddedLabel = await finalPdfDoc.embedPage(sourceLabelPage, {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>left: quadrant.x, bottom: quadrant.y,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>right: quadrant.x + quadrantWidth, top: quadrant.y + quadrantHeight</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>});</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const scaleLabel = Math.min(targetWidth / embeddedLabel.width, targetHeight / embeddedLabel.height);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>newLabelPage.drawPage(embeddedLabel, {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>x: (targetWidth - embeddedLabel.width * scaleLabel) / 2,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>y: (targetHeight - embeddedLabel.height * scaleLabel) / 2,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>width: embeddedLabel.width * scaleLabel, height: embeddedLabel.height * scaleLabel</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const newContentPage = finalPdfDoc.addPage([targetWidth, targetHeight]);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const embeddedContent = await finalPdfDoc.embedPage(sourceContentPage, {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>left: quadrant.x, bottom: quadrant.y,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>right: quadrant.x + quadrantWidth, top: quadrant.y + quadrantHeight</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>});</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const scaleContent = Math.min(targetWidth / embeddedContent.width, targetHeight / embeddedContent.height);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>newContentPage.drawPage(embeddedContent, {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>x: (targetWidth - embeddedContent.width * scaleContent) / 2,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>y: (targetHeight - embeddedContent.height * scaleContent) / 2,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>width: embeddedContent.width * scaleContent, height: embeddedContent.height * scaleContent</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>});</p>
+<p class="p2"><span class="Apple-converted-space">                    </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>updateProgress(i + 1, labelCount);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>progressText.textContent = 'Salvando PDF final...';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const finalPdfBytes = await finalPdfDoc.save();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const newFileName = `conversor_pampa_${labelCount}_etiquetas.pdf`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>createDownloadLink(finalPdfBytes, newFileName, `Baixar PDF com ${labelCount} etiquetas`);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>loadingArea.classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>resultsArea.classList.remove('hidden');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>} catch (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                 </span>console.error(`Erro ao processar PDF com ${type}:`, error);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>progressText.textContent = `Erro: ${error.message}. Tente novamente.`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>progressBar.style.backgroundColor = '#ef4444';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- FUNÇÕES GENÉRICAS DE UPLOAD ---</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function setupUploadArea(area, input, prompt, info, nameEl, removeBtn, onFileSelectCallback) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>area.addEventListener('click', () =&gt; input.click());</p>
+<p class="p1"><span class="Apple-converted-space">            </span>area.addEventListener('dragover', (e) =&gt; { e.preventDefault(); e.stopPropagation(); area.classList.add('border-blue-500', 'bg-blue-50'); });</p>
+<p class="p1"><span class="Apple-converted-space">            </span>area.addEventListener('dragleave', (e) =&gt; { e.preventDefault(); e.stopPropagation(); area.classList.remove('border-blue-500', 'bg-blue-50'); });</p>
+<p class="p1"><span class="Apple-converted-space">            </span>area.addEventListener('drop', (e) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>e.preventDefault(); e.stopPropagation();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>area.classList.remove('border-blue-500', 'bg-blue-50');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (e.dataTransfer.files &amp;&amp; e.dataTransfer.files[0]) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>handleFile(e.dataTransfer.files[0], input, prompt, info, nameEl, onFileSelectCallback);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>input.addEventListener('change', (e) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (input.files &amp;&amp; input.files[0]) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>handleFile(input.files[0], input, prompt, info, nameEl, onFileSelectCallback);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>removeBtn.addEventListener('click', (e) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>e.stopPropagation();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>resetUploadArea(area, input, prompt, info);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>onFileSelectCallback(null);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function handleFile(file, input, prompt, info, nameEl, onFileSelectCallback) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>nameEl.textContent = file.name;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>prompt.classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>info.classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>onFileSelectCallback(file);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function resetUploadArea(area, input, prompt, info) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>input.value = '';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>prompt.classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>info.classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
